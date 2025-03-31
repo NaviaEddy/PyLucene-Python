@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Interfaz de Búsqueda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f2f2f2;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="file"] {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #0056b3;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #004494;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .no-data {
+            color: #555;
+            background: #e0e0e0;
+            padding: 10px;
+            border-left: 4px solid #999;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .flash-success {
+            color: green;
+            background: #e6ffed;
+            padding: 10px;
+            border-left: 4px solid green;
+            margin-bottom: 20px;
+        }
+        .flash-danger {
+            color: red;
+            background: #ffe6e6;
+            padding: 10px;
+            border-left: 4px solid red;
+            margin-bottom: 20px;
+        }
+        .form-section {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-section h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interfaz de Búsqueda con PyLucene y PostgreSQL</h1>
+    
+    <!-- Mensajes flash para notificaciones -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <!-- Formulario de búsqueda -->
+    <form action="{{ url_for('search') }}" method="get">
+        <input type="text" name="q" placeholder="Buscar..." value="{{ query or '' }}">
+        <button type="submit">Buscar</button>
+    </form>
+    
+    <!-- Sección para indexar la base de datos PostgreSQL -->
+    <div class="form-section">
+        <h3>Indexar Base de Datos PostgreSQL</h3>
+        <form action="{{ url_for('index_db') }}" method="post">
+            <button type="submit">Indexar Base de Datos</button>
+        </form>
+    </div>
+    
+    <!-- Nueva sección para indexar archivos o carpetas mediante el explorador de archivos -->
+    <div class="form-section">
+        <h3>Indexar Archivo o Carpeta</h3>
+        <form id="fileUploadForm" enctype="multipart/form-data">
+            <!-- El atributo webkitdirectory permite seleccionar carpetas (soportado en Chrome, Edge y otros basados en WebKit) -->
+            <input type="file" id="fileInput" name="files" multiple accept=".txt,.doc,.docx,.pdf,.jpg,.png">
+            <button type="submit">Indexar Selección</button>
+        </form>
+    </div>
+    
+    <!-- Mostrar resultados de búsqueda -->
+    {% if results %}
+    <h2>Resultados</h2>
+    <ul>
+        {% for res in results %}
+            <li>
+                <strong>Score:</strong> {{ res.score }} <br>
+                <strong>Contenido:</strong> {{ res.content }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <div class="no-data">No se encontraron datos</div>
+    {% endif %}
+
+    <script>
+        // Manejar el envío del formulario de archivos
+        document.getElementById("fileUploadForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const input = document.getElementById("fileInput");
+            const files = input.files;
+            if(files.length === 0) {
+                alert("Por favor, seleccione al menos un archivo o carpeta.");
+                return;
+            }
+            
+            // Creamos un objeto FormData para enviar los archivos
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            
+            fetch("{{ url_for('index_path') }}", {
+                method: "POST",
+                body: formData
+            }).then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.json();
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
