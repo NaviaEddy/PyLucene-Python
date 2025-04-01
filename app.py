@@ -3,6 +3,7 @@ import fitz
 import pytesseract
 from PIL import Image
 from docx import Document as DocxDocument
+import pandas as pd
 import lucene
 import psycopg2
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
@@ -17,7 +18,7 @@ from org.apache.lucene.store import FSDirectory
 app = Flask(__name__)
 app.secret_key = "tu_clave_secreta"  # Reemplaza por una clave secreta adecuada
 INDEX_DIR = "index_dir"
-ALLOWED_EXTENSIONS = {"txt", "docx", "pdf", "png", "jpg", "jpeg"}
+ALLOWED_EXTENSIONS = {"txt", "docx", "pdf", "png", "jpg", "jpeg",  "xls", "xlsx"}
 
 # Inicializar la máquina virtual de Java (PyLucene)
 lucene.initVM()
@@ -41,6 +42,17 @@ def extract_text_from_image(file):
     image = Image.open(file)
     return pytesseract.image_to_string(image)
 
+def extract_text_from_excel(file):
+    try:
+        excel_data = pd.read_excel(file, sheet_name=None)
+        text_content = []
+        for sheet_name, df in excel_data.items():
+            text_content.append(f"Hoja: {sheet_name}\n{df.to_string(index=False)}")
+        return "\n\n".join(text_content)
+    except Exception as e:
+        print(f"Error al extraer texto del Excel: {e}")
+        return None
+
 def attach_thread():
     """Adjunta el hilo actual a la JVM."""
     lucene.getVMEnv().attachCurrentThread()
@@ -54,10 +66,12 @@ def get_index_writer():
     writer = IndexWriter(directory, config)
     return writer
 
-def add_document(content):
+def add_document(content, filename=None):
     writer = get_index_writer()
     doc = Document()
     doc.add(TextField("content", content, Field.Store.YES))
+    if filename:
+        doc.add(TextField("filename", filename, Field.Store.YES))
     writer.addDocument(doc)
     writer.commit()
     writer.close()
@@ -76,6 +90,7 @@ def search_documents(query_str):
         doc = searcher.storedFields().document(hit.doc)
         results.append({
             "content": doc.get("content"),
+            "filename": doc.get("filename"),
             "score": hit.score
         })
     reader.close()
@@ -151,7 +166,7 @@ def index_folder(folder_path):
 def home():
     return render_template("index.html")
 
-# API para indexar la base de datos PostgreSQL (ahora renderiza una respuesta en HTML)
+# API para indexar la base de datos PostgreSQL
 @app.route("/index_db", methods=["POST"])
 def index_db():
     try:
@@ -161,7 +176,7 @@ def index_db():
         flash(f"Error al indexar la base de datos: {str(e)}", "danger")
     return redirect(url_for("home"))
 
-# API para indexar un documento individual (en formato JSON, se mantiene sin cambios)
+# API para indexar un documento individual
 @app.route("/index", methods=["POST"])
 def index_document():
     data = request.get_json()
@@ -202,9 +217,11 @@ def index_path():
                         text_content = extract_text_from_pdf(file)
                     elif filename.endswith(('.png', '.jpg', '.jpeg')):
                         text_content = extract_text_from_image(file)
+                    elif filename.endswith(('.xls', '.xlsx')):
+                        text_content = extract_text_from_excel(file)
 
                     if text_content:
-                        add_document(text_content)
+                        add_document(text_content, filename=file.filename)
                         print(f"Archivo indexado: {file.filename}")
                     else:
                         flash(f"El archivo {file.filename} no contiene texto legible.", "warning")

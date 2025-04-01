@@ -1,5 +1,9 @@
 FROM coady/pylucene
 
+#Para el tratamiento de las imagenes
+USER root
+RUN apt-get update && apt-get install -y tesseract-ocr && rm -rf /var/lib/apt/lists/*
+
 # Establecer el directorio de trabajo
 WORKDIR /app
 
