@@ -6,14 +6,14 @@ Aplicación web para indexar y buscar contenido de documentos y bases de datos m
 
 Este proyecto es una aplicación web desarrollada en Python usando el framework Flask. La aplicación ofrece una interfaz HTML para:
 
-- Indexar documentos (archivos de texto, DOCX, PDF, imágenes) y datos de una base de datos PostgreSQL.
+- Indexar documentos (archivos de texto, DOCX, PDF, imágenes, Excel) y datos de una base de datos PostgreSQL.
 - Realizar búsquedas de texto utilizando PyLucene, una integración de la biblioteca Java Lucene para indexado y búsqueda.
 
 El sistema permite agregar contenido de diversas fuentes a un índice de búsqueda, facilitando la recuperación de información a partir de consultas de texto.
 
 ## ✨ Características Principales
 
-- **Indexación de Archivos**: Soporta archivos en formato .txt, .docx, .pdf y archivos de imagen (.png, .jpg, .jpeg).
+- **Indexación de Archivos**: Soporta archivos en formato .txt, .docx, .pdf, .xls, .xlsx y archivos de imagen (.png, .jpg, .jpeg).
   - Para archivos PDF, se utiliza la biblioteca [PyMuPDF (fitz)](https://pymupdf.readthedocs.io/) para extraer texto.
   - Para imágenes, se utiliza [pytesseract](https://pypi.org/project/pytesseract/) para reconocimiento óptico de caracteres (OCR).
 
