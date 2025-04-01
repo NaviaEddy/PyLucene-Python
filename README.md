@@ -1,4 +1,4 @@
-# Buscador con PyLucene, PostgreSQL y Flask
+# Motor de Busqueda con PyLucene
 
 Aplicación web para indexar y buscar contenido de documentos y bases de datos mediante PyLucene.
 
