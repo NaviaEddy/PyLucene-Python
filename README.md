@@ -87,46 +87,6 @@ El archivo requirements.txt incluye las siguientes librerías:
 > [!NOTE]
 > Si la base de datos PostgreSQL se ejecuta en otro contenedor o en el host, asegúrese de que la conexión (host, puerto, etc.) esté correctamente configurada (por ejemplo, usando host.docker.internal).
 
-## 💻 Descripción del Código
-### app.py
-- **Imports y Configuración Inicial**: Importa librerías necesarias e inicializa la aplicación Flask.
-- **Funciones de Extracción de Texto**:
-    - **extract_text_from_txt()**: Extrae texto de archivos de texto.
-    - **extract_text_from_docx()**: Procesa documentos DOCX.
-    - **extract_text_from_pdf()**: Extrae texto de archivos PDF.
-    - **extract_text_from_image()**: Utiliza Tesseract OCR para extraer texto de imágenes.
-- **Funciones de Indexado con PyLucene**:
-    - **attach_thread()**: Adjunta el hilo actual a la JVM.
-    - **get_index_writer()**: Configura y retorna un IndexWriter.
-    - **add_document(content)**: Crea un documento Lucene con el contenido.
-    - **search_documents(query_str)**: Realiza búsquedas en el índice.
-- **Indexación de la Base de Datos PostgreSQL**:
-    - **index_postgres()**: Conecta a la base de datos y añade el contenido al índice.
-- **Indexación de Archivos**:
-    - **index_file(file_path)**: Indexa archivos individuales.
-    - **index_folder(folder_path)**: Recorre e indexa carpetas.
-- **Rutas y Endpoints de Flask**:
-    - **/**: Ruta principal que renderiza la plantilla index.html.
-    - **/index_db**: Endpoint para indexar la base de datos PostgreSQL.
-    - **/index**: API para indexar documentos mediante solicitudes JSON.
-    - **/index_path**: Endpoint para indexar archivos mediante formularios.
-    - **/search**: Endpoint para realizar búsquedas en el índice.
-      
-### Dockerfile
-El Dockerfile utiliza la imagen base coady/pylucene y:
-  - Establece el directorio de trabajo
-  - Copia los archivos del proyecto
-  - Instala las dependencias de Python
-  - Expone el puerto 5000
-  - Define el comando para ejecutar la aplicación
-    
-### Plantilla HTML (templates/index.html)
-La plantilla HTML ofrece:
-  - Un formulario de búsqueda
-  - Sección para indexar la base de datos PostgreSQL
-  - Sección para indexar archivos o carpetas
-  - Renderización de resultados de búsqueda y mensajes flash
-    
 ## 📝 Uso de la Aplicación
 ### Inicio y Búsqueda
   - Al acceder a la raíz (/), se muestra la interfaz principal con un formulario de búsqueda.
