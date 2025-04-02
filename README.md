@@ -30,8 +30,7 @@ El sistema permite agregar contenido de diversas fuentes a un índice de búsque
 ├── app.py            # Código principal de la aplicación Flask
 ├── Dockerfile        # Instrucciones para construir la imagen Docker
 ├── requirements.txt  # Lista de dependencias de Python
-└── templates
-└── index.html    # Plantilla HTML para la interfaz de usuario
+└── templates         # Archivos de plantillas HTML para la interfaz web.
 ```
 ## 🔧 Requisitos y Dependencias
 
