@@ -72,6 +72,9 @@ El archivo requirements.txt incluye las siguientes librerías:
 4. **Importar la imagen de Docker coady/pylucene**
    ```bash
    docker pull coady/pylucene
+   ```
+   ![image](https://github.com/user-attachments/assets/ef89e9df-8026-4055-89bb-9c1fe03c53e3)
+
 5. **Configurar conexion a PostgreSQL**: Actualice las credenciales y parámetros de conexión en la función index_postgres() del archivo app.py si es necesario.
    
 ### Instalación con Docker
