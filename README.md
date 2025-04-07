@@ -99,10 +99,30 @@ El archivo requirements.txt incluye las siguientes librerías:
 > Si la base de datos PostgreSQL se ejecuta en otro contenedor o en el host, asegúrese de que la conexión (host, puerto, etc.) esté correctamente configurada (por ejemplo, usando host.docker.internal).
 ## Ejecucion de la aplicacion 
 1. Ingresamos a la url asignada al momento de hacer correr el contenedor
+   ```bash
+    http://127.0.0.1:5000
+    ```
    ![image](https://github.com/user-attachments/assets/dbd8ed0f-f3c8-4b61-af18-e60f002c1b8b)
 
 2. Damos click al boton indexar Base de datos PostgreSQL
    ![image](https://github.com/user-attachments/assets/892de662-32ab-4d04-95d5-8c47f59f8154)
+   
+3. Para mas informacion de lo que se esta indexando nos fijamos en la consola de ejecucion
+   ![image](https://github.com/user-attachments/assets/8fc44ae4-17b6-43b9-ad14-f2e8eaaf7b94)
+   ![image](https://github.com/user-attachments/assets/bf0986ac-99b6-413d-9327-c109704b7c7f)
+   
+4. Buscamos un dato de nuestra base de datos de cualquier tabla y vemos los resultados de la busqueda
+   ![image](https://github.com/user-attachments/assets/8a1e4a1f-6755-40cd-a738-99ec0d60653c)
+   
+5. Elegimos cualquier archivo en formato .txt, .docx, .pdf, .xls, .xlsx y archivos de imagen (.png, .jpg, .jpeg)
+   ![image](https://github.com/user-attachments/assets/a607e176-0af2-4e1d-880e-ada9f0d90c9a)
+   ![image](https://github.com/user-attachments/assets/605e3c32-8e40-4f54-8321-44f2b5b89699)
+  
+6. Verificamos su contenido
+   ![image](https://github.com/user-attachments/assets/f2a2d70a-6def-4f24-9d8e-a4de9cb52ae0)
+
+7. Buscamos una palabra del texto y analizamos los resultados
+   ![image](https://github.com/user-attachments/assets/07fbb878-54d0-4843-b26e-81120f9f1b88)
 
 ## 📝 Uso de la Aplicación
 ### Inicio y Búsqueda
