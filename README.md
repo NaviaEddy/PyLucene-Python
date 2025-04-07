@@ -82,9 +82,19 @@ El archivo requirements.txt incluye las siguientes librerías:
 1. **Construir la imagen de Docjer**
     ```bash
     docker build -t buscador-pylucene .
+    ```
+    ![image](https://github.com/user-attachments/assets/817327c3-3fb0-4e56-adb5-0c75111e0043)
+
 3. **Ejecuta el contenedor**
     ```bash
     docker run -p 5000:5000 buscador-pylucene
+    ```
+    ![image](https://github.com/user-attachments/assets/051b744a-bb93-4a30-a09f-b16795466027)
+    ![image](https://github.com/user-attachments/assets/705ac0b7-3536-4dfd-93a1-f6f120f87247)
+   
+5. Podemos verificar si el contenedor esta corriendo en el apartado de Docker Desktop / Containers
+  ![image](https://github.com/user-attachments/assets/47a395d3-910a-47c6-8bd9-b68820cdde43)
+
 
 > [!NOTE]
 > Si la base de datos PostgreSQL se ejecuta en otro contenedor o en el host, asegúrese de que la conexión (host, puerto, etc.) esté correctamente configurada (por ejemplo, usando host.docker.internal).
