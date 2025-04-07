@@ -95,9 +95,14 @@ El archivo requirements.txt incluye las siguientes librerías:
 5. Podemos verificar si el contenedor esta corriendo en el apartado de Docker Desktop / Containers
   ![image](https://github.com/user-attachments/assets/47a395d3-910a-47c6-8bd9-b68820cdde43)
 
-
 > [!NOTE]
 > Si la base de datos PostgreSQL se ejecuta en otro contenedor o en el host, asegúrese de que la conexión (host, puerto, etc.) esté correctamente configurada (por ejemplo, usando host.docker.internal).
+## Ejecucion de la aplicacion 
+1. Ingresamos a la url asignada al momento de hacer correr el contenedor
+   ![image](https://github.com/user-attachments/assets/dbd8ed0f-f3c8-4b61-af18-e60f002c1b8b)
+
+2. Damos click al boton indexar Base de datos PostgreSQL
+   ![image](https://github.com/user-attachments/assets/892de662-32ab-4d04-95d5-8c47f59f8154)
 
 ## 📝 Uso de la Aplicación
 ### Inicio y Búsqueda
